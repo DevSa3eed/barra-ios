@@ -1,0 +1,384 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		697560F065B6AB2E1EE13853 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D127C6AB76292E4DCDE42744 /* HistoryView.swift */; };
+		AAF5EC5FD7ECE8BC6D87B403 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83F7AFE11D1300EE6AFDDE /* ContentView.swift */; };
+		BAC3CBBF1A1FCCB5BDE8CF15 /* CrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AE0F3EF207692C9590880 /* CrewView.swift */; };
+		C229F612902C5FDF2F61D38F /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA039D3A25BC7CF14A75AA /* GamesView.swift */; };
+		D0DE143D8FA60F9F475523BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D0DC8C6A4B144421C41210C /* Assets.xcassets */; };
+		E0212B556AAF7317976A6A62 /* BarraTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B52914B1267EB7C8A7D7A17 /* BarraTheme.swift */; };
+		EB330AE8AC626A9A7670A7F8 /* BarraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D161A4B877B665993B56E2 /* BarraApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		31D161A4B877B665993B56E2 /* BarraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraApp.swift; sourceTree = "<group>"; };
+		5D0DC8C6A4B144421C41210C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6CBA039D3A25BC7CF14A75AA /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
+		756AE0F3EF207692C9590880 /* CrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewView.swift; sourceTree = "<group>"; };
+		7B52914B1267EB7C8A7D7A17 /* BarraTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraTheme.swift; sourceTree = "<group>"; };
+		7C83F7AFE11D1300EE6AFDDE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CA30AD2C6E7353757858C243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D127C6AB76292E4DCDE42744 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		D9714D1137950D7A4B8CAE6A /* Barra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Barra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		00CF91CB3250DC0C1A6A1089 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				31D161A4B877B665993B56E2 /* BarraApp.swift */,
+				7C83F7AFE11D1300EE6AFDDE /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1494B317505B190F7FB11584 = {
+			isa = PBXGroup;
+			children = (
+				98D45B4CD60909EAEAED49B8 /* Barra */,
+				1F490AE0EB011C0538650F9B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1F490AE0EB011C0538650F9B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D9714D1137950D7A4B8CAE6A /* Barra.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26681C3F7822FEA68AEE5BFE /* History */ = {
+			isa = PBXGroup;
+			children = (
+				D127C6AB76292E4DCDE42744 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		27D1EC1586E5FE9E0E0E56FF /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				7B52914B1267EB7C8A7D7A17 /* BarraTheme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		49E9808A6FA46CFCEDF0F348 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				8B4AE2BC4F5175576031EAC5 /* Crew */,
+				9B60B3F15105A8AC511E2BC5 /* Games */,
+				26681C3F7822FEA68AEE5BFE /* History */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		71F8F0E31F6B4817C0FA5501 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				27D1EC1586E5FE9E0E0E56FF /* Theme */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		8B4AE2BC4F5175576031EAC5 /* Crew */ = {
+			isa = PBXGroup;
+			children = (
+				756AE0F3EF207692C9590880 /* CrewView.swift */,
+			);
+			path = Crew;
+			sourceTree = "<group>";
+		};
+		98D45B4CD60909EAEAED49B8 /* Barra */ = {
+			isa = PBXGroup;
+			children = (
+				5D0DC8C6A4B144421C41210C /* Assets.xcassets */,
+				CA30AD2C6E7353757858C243 /* Info.plist */,
+				00CF91CB3250DC0C1A6A1089 /* App */,
+				71F8F0E31F6B4817C0FA5501 /* Core */,
+				49E9808A6FA46CFCEDF0F348 /* Features */,
+			);
+			path = Barra;
+			sourceTree = "<group>";
+		};
+		9B60B3F15105A8AC511E2BC5 /* Games */ = {
+			isa = PBXGroup;
+			children = (
+				6CBA039D3A25BC7CF14A75AA /* GamesView.swift */,
+			);
+			path = Games;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		18B9F5FCAB4F54A56753AEE3 /* Barra */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA00DA8EE46EA6CAEAF306A8 /* Build configuration list for PBXNativeTarget "Barra" */;
+			buildPhases = (
+				0EE987CBE29BD485C6C1531B /* Sources */,
+				979AC44945B9D95CE9616A33 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Barra;
+			packageProductDependencies = (
+			);
+			productName = Barra;
+			productReference = D9714D1137950D7A4B8CAE6A /* Barra.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		75810E16A8671BDCB353B945 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					18B9F5FCAB4F54A56753AEE3 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 8763DC3B0F9DB8E85BBB6DC3 /* Build configuration list for PBXProject "Barra" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1494B317505B190F7FB11584;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1F490AE0EB011C0538650F9B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				18B9F5FCAB4F54A56753AEE3 /* Barra */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		979AC44945B9D95CE9616A33 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0DE143D8FA60F9F475523BB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EE987CBE29BD485C6C1531B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB330AE8AC626A9A7670A7F8 /* BarraApp.swift in Sources */,
+				E0212B556AAF7317976A6A62 /* BarraTheme.swift in Sources */,
+				AAF5EC5FD7ECE8BC6D87B403 /* ContentView.swift in Sources */,
+				BAC3CBBF1A1FCCB5BDE8CF15 /* CrewView.swift in Sources */,
+				C229F612902C5FDF2F61D38F /* GamesView.swift in Sources */,
+				697560F065B6AB2E1EE13853 /* HistoryView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		524BFB80B15259178EA2B7BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nzayn.barra;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		768716E1568FD69B20BCB89A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Barra/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_NAME = Barra;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		93D6C8CD7C22217533058E54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Barra/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_NAME = Barra;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E0E2E57098C7ED524FA953BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nzayn.barra;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8763DC3B0F9DB8E85BBB6DC3 /* Build configuration list for PBXProject "Barra" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				524BFB80B15259178EA2B7BC /* Debug */,
+				E0E2E57098C7ED524FA953BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EA00DA8EE46EA6CAEAF306A8 /* Build configuration list for PBXNativeTarget "Barra" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93D6C8CD7C22217533058E54 /* Debug */,
+				768716E1568FD69B20BCB89A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 75810E16A8671BDCB353B945 /* Project object */;
+}
