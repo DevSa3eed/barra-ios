@@ -1,11 +1,13 @@
 import SwiftUI
 
 /// The main gameplay screen — shown during an active Password game.
-///
-/// @ObservedObject: receives the ViewModel from PasswordSetupView (the owner).
 struct PasswordGameView: View {
 
     @ObservedObject var gameVM: PasswordViewModel
+
+    // Word reveal animation
+    @State private var wordScale: CGFloat = 0.3
+    @State private var wordOpacity: Double = 0
 
     var body: some View {
         ZStack {
@@ -13,7 +15,7 @@ struct PasswordGameView: View {
 
             switch gameVM.phase {
             case .setup:
-                EmptyView()     // handled by PasswordSetupView
+                EmptyView()
 
             case .roundIntro:
                 roundIntroView
@@ -22,8 +24,8 @@ struct PasswordGameView: View {
             case .playing:
                 playingView
                     .transition(.asymmetric(
-                        insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
+                        insertion: .move(edge: .trailing).combined(with: .opacity),
+                        removal: .move(edge: .leading).combined(with: .opacity)
                     ))
 
             case .roundEnd:
@@ -44,14 +46,21 @@ struct PasswordGameView: View {
         VStack(spacing: BarraTheme.paddingL) {
             Spacer()
 
-            // Team colour indicator
+            // Team colour indicator — with a breathing glow
             ZStack {
+                // Outer glow
+                Circle()
+                    .fill(teamColor(gameVM.currentTeamIndex).opacity(0.08))
+                    .frame(width: 160, height: 160)
+
                 Circle()
                     .fill(teamColor(gameVM.currentTeamIndex).opacity(0.15))
                     .frame(width: 120, height: 120)
+
                 Text(teamEmoji(gameVM.currentTeamIndex))
                     .font(.system(size: 52))
             }
+            .staggeredAppearance(index: 0)
 
             VStack(spacing: 8) {
                 Text(gameVM.currentTeam.name)
@@ -61,6 +70,7 @@ struct PasswordGameView: View {
                     .font(.system(size: 18, design: .rounded))
                     .foregroundStyle(BarraTheme.secondary)
             }
+            .staggeredAppearance(index: 1)
 
             Text(gameVM.roundLabel)
                 .font(.system(size: 14, weight: .medium, design: .rounded))
@@ -69,11 +79,12 @@ struct PasswordGameView: View {
                 .padding(.vertical, 6)
                 .background(BarraTheme.surface)
                 .clipShape(Capsule())
+                .staggeredAppearance(index: 2)
 
             Spacer()
 
-            // Score bar
             scoreBar
+                .staggeredAppearance(index: 3)
 
             Text("Pass the phone to \(gameVM.currentTeam.name)'s describer — don't let the other team see the word!")
                 .font(.system(size: 13, design: .rounded))
@@ -81,9 +92,17 @@ struct PasswordGameView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, BarraTheme.paddingL)
 
-            BarraButton(title: "I'm Ready — Show Word") {
+            BarraButton(title: "I'm Ready — Show Word", icon: "eye.fill") {
+                HapticManager.light()
                 withAnimation {
                     gameVM.beginRound()
+                }
+                // Trigger word reveal animation
+                wordScale = 0.3
+                wordOpacity = 0
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.6).delay(0.15)) {
+                    wordScale = 1.0
+                    wordOpacity = 1.0
                 }
             }
             .padding(.horizontal, BarraTheme.paddingL)
@@ -96,7 +115,7 @@ struct PasswordGameView: View {
     private var playingView: some View {
         VStack(spacing: 0) {
 
-            // Top bar: round label + score
+            // Top bar
             VStack(spacing: BarraTheme.paddingS) {
                 Text(gameVM.roundLabel)
                     .font(.system(size: 13, weight: .medium, design: .rounded))
@@ -108,12 +127,12 @@ struct PasswordGameView: View {
 
             Spacer()
 
-            // Timer ring
+            // Timer ring with pulse when low
             timerRing
 
             Spacer()
 
-            // The word — this is what the describer sees
+            // The word — revealed with a spring animation
             VStack(spacing: BarraTheme.paddingS) {
                 Text("The word is")
                     .font(.system(size: 16, design: .rounded))
@@ -125,7 +144,8 @@ struct PasswordGameView: View {
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
                     .padding(.horizontal, BarraTheme.paddingL)
-                    .contentTransition(.numericText())   // smooth word transition
+                    .scaleEffect(wordScale)
+                    .opacity(wordOpacity)
             }
 
             Spacer()
@@ -134,6 +154,7 @@ struct PasswordGameView: View {
             HStack(spacing: BarraTheme.paddingM) {
                 // Skip
                 Button {
+                    HapticManager.light()
                     withAnimation { gameVM.wordSkipped() }
                 } label: {
                     VStack(spacing: 6) {
@@ -152,9 +173,11 @@ struct PasswordGameView: View {
                             .stroke(BarraTheme.secondary.opacity(0.3), lineWidth: 1)
                     )
                 }
+                .buttonStyle(BarraPressStyle())
 
                 // Got it!
                 Button {
+                    HapticManager.doubleTap()
                     withAnimation { gameVM.wordGuessed() }
                 } label: {
                     VStack(spacing: 6) {
@@ -166,12 +189,22 @@ struct PasswordGameView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, BarraTheme.paddingM)
                     .foregroundStyle(.white)
-                    .background(Color(red: 0.18, green: 0.65, blue: 0.40))  // success green
+                    .background(Color(red: 0.18, green: 0.65, blue: 0.40))
                     .clipShape(RoundedRectangle(cornerRadius: BarraTheme.cornerRadius))
                 }
+                .buttonStyle(BarraPressStyle())
             }
             .padding(.horizontal, BarraTheme.paddingM)
             .padding(.bottom, BarraTheme.paddingL)
+        }
+        // Haptic ticks in the final 5 seconds
+        .onChange(of: gameVM.timeRemaining) { _, newValue in
+            if newValue <= 5 && newValue > 0 {
+                HapticManager.tick()
+            }
+            if newValue == 10 {
+                HapticManager.warning()
+            }
         }
     }
 
@@ -195,10 +228,8 @@ struct PasswordGameView: View {
 
     private var scoreBar: some View {
         HStack {
-            // Team 1
             HStack(spacing: 6) {
-                Text("🔴")
-                    .font(.system(size: 16))
+                Text("🔴").font(.system(size: 16))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(gameVM.teams[0].name)
                         .font(.system(size: 13, weight: .medium, design: .rounded))
@@ -212,14 +243,12 @@ struct PasswordGameView: View {
 
             Spacer()
 
-            // VS
             Text("vs")
                 .font(.system(size: 13, design: .rounded))
                 .foregroundStyle(BarraTheme.secondary)
 
             Spacer()
 
-            // Team 2
             HStack(spacing: 6) {
                 VStack(alignment: .trailing, spacing: 2) {
                     Text(gameVM.teams[1].name)
@@ -230,8 +259,7 @@ struct PasswordGameView: View {
                         .foregroundStyle(BarraTheme.primary)
                         .contentTransition(.numericText())
                 }
-                Text("🔵")
-                    .font(.system(size: 16))
+                Text("🔵").font(.system(size: 16))
             }
         }
         .padding(.horizontal, BarraTheme.paddingL)
@@ -244,13 +272,15 @@ struct PasswordGameView: View {
     }
 
     private var timerRing: some View {
-        ZStack {
+        let isUrgent = gameVM.timeRemaining <= 10
+
+        return ZStack {
             // Background ring
             Circle()
                 .stroke(BarraTheme.secondary.opacity(0.15), lineWidth: 8)
                 .frame(width: 110, height: 110)
 
-            // Progress ring — animates as timeRemaining decreases
+            // Progress ring
             Circle()
                 .trim(from: 0, to: gameVM.timerProgress)
                 .stroke(
@@ -258,7 +288,7 @@ struct PasswordGameView: View {
                     style: StrokeStyle(lineWidth: 8, lineCap: .round)
                 )
                 .frame(width: 110, height: 110)
-                .rotationEffect(.degrees(-90))  // start from the top
+                .rotationEffect(.degrees(-90))
                 .animation(.linear(duration: 1), value: gameVM.timeRemaining)
 
             // Time number
@@ -273,6 +303,9 @@ struct PasswordGameView: View {
                     .foregroundStyle(BarraTheme.secondary)
             }
         }
+        // Pulse the ring when urgent
+        .scaleEffect(isUrgent && gameVM.timeRemaining % 2 == 0 ? 1.06 : 1.0)
+        .animation(.easeInOut(duration: 0.5), value: gameVM.timeRemaining)
     }
 
     // MARK: - Helpers

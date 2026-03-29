@@ -80,7 +80,10 @@ struct CrewDetailView: View {
                 isPresented: $showLeaveConfirm,
                 titleVisibility: .visible
             ) {
-                Button("Leave Crew", role: .destructive) { crewVM.leaveCrew() }
+                Button("Leave Crew", role: .destructive) {
+                    HapticManager.heavy()
+                    crewVM.leaveCrew()
+                }
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("You'll need the invite code to rejoin.")
@@ -101,6 +104,7 @@ struct CrewDetailView: View {
 
             Button {
                 UIPasteboard.general.string = crew.inviteCode
+                HapticManager.rigid()
                 withAnimation(.spring(response: 0.3)) { codeCopied = true }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     withAnimation { codeCopied = false }

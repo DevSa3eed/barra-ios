@@ -123,6 +123,7 @@ struct EventDetailView: View {
         let isSelected = currentRSVP == status
 
         Button {
+            HapticManager.selection()
             withAnimation(.spring(response: 0.3)) {
                 crewVM.rsvp(to: event, status: status)
             }

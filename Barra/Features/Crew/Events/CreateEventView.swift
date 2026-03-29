@@ -89,13 +89,14 @@ struct CreateEventView: View {
 
                         Spacer(minLength: BarraTheme.paddingL)
 
-                        BarraButton(title: "Schedule It") {
+                        BarraButton(title: "Schedule It", icon: "calendar.badge.plus") {
                             crewVM.scheduleEvent(
                                 title: title.trimmingCharacters(in: .whitespaces),
                                 date: date,
                                 location: location.trimmingCharacters(in: .whitespaces),
                                 notes: notes.trimmingCharacters(in: .whitespaces)
                             )
+                            HapticManager.success()
                             dismiss()
                         }
                         .disabled(!canSchedule)

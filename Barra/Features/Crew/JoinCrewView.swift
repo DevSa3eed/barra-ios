@@ -69,14 +69,16 @@ struct JoinCrewView: View {
                     Spacer()
 
                     // Join button
-                    BarraButton(title: "Join Crew") {
+                    BarraButton(title: "Join Crew", icon: "arrow.right.circle.fill") {
                         let success = crewVM.joinCrew(
                             code: code,
                             yourName: yourName.trimmingCharacters(in: .whitespaces)
                         )
                         if success {
+                            HapticManager.success()
                             dismiss()
                         } else {
+                            HapticManager.error()
                             showError = true
                         }
                     }

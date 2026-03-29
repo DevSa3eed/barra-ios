@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct GamesView: View {
+
+    @State private var appeared = false
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -12,6 +15,7 @@ struct GamesView: View {
                         // Active games
                         VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
                             sectionLabel("Ready to Play")
+                                .staggeredAppearance(index: 0)
 
                             NavigationLink(destination: PasswordSetupView()) {
                                 GameCard(
@@ -23,12 +27,14 @@ struct GamesView: View {
                                     isAvailable: true
                                 )
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(BarraCardPressStyle())
+                            .staggeredAppearance(index: 1)
                         }
 
                         // Coming soon
                         VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
                             sectionLabel("Coming Soon")
+                                .staggeredAppearance(index: 2)
 
                             GameCard(
                                 title: "Mafia",
@@ -38,6 +44,7 @@ struct GamesView: View {
                                 duration: "~30 min",
                                 isAvailable: false
                             )
+                            .staggeredAppearance(index: 3)
 
                             GameCard(
                                 title: "Flip 7",
@@ -47,6 +54,7 @@ struct GamesView: View {
                                 duration: "~20 min",
                                 isAvailable: false
                             )
+                            .staggeredAppearance(index: 4)
                         }
                     }
                     .padding(BarraTheme.paddingM)
@@ -88,7 +96,6 @@ struct GameCard: View {
                     .opacity(isAvailable ? 1.0 : 0.5)
             }
 
-            // Info
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(title)

@@ -44,11 +44,12 @@ struct CreateCrewView: View {
                     Spacer()
 
                     // Create button
-                    BarraButton(title: "Create Crew") {
+                    BarraButton(title: "Create Crew", icon: "sparkles") {
                         crewVM.createCrew(
                             name: crewName.trimmingCharacters(in: .whitespaces),
                             yourName: yourName.trimmingCharacters(in: .whitespaces)
                         )
+                        HapticManager.success()
                         dismiss()
                     }
                     .disabled(!canCreate)

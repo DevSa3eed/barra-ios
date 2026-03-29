@@ -4,17 +4,10 @@ import SwiftUI
 ///
 /// Acts as a "gate view" — looks at crewVM.currentCrew and decides
 /// whether to show the empty state (no crew) or the crew detail.
-///
-/// WHY @ObservedObject here and @StateObject in ContentView?
-///   ContentView CREATES the ViewModel — it owns it (@StateObject).
-///   CrewView RECEIVES it — it just observes it (@ObservedObject).
-///   If you used @StateObject here, a new ViewModel would be created
-///   every time SwiftUI rebuilt CrewView, wiping the saved crew.
 struct CrewView: View {
 
     @ObservedObject var crewVM: CrewViewModel
 
-    // Local UI state — only controls whether sheets are visible
     @State private var showCreate = false
     @State private var showJoin = false
 
@@ -24,13 +17,17 @@ struct CrewView: View {
                 BarraTheme.background.ignoresSafeArea()
 
                 if let crew = crewVM.currentCrew {
-                    // Crew exists → navigate to detail
                     crewExistsView(crew: crew)
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 0.95).combined(with: .opacity),
+                            removal: .opacity
+                        ))
                 } else {
-                    // No crew → show empty state with create/join
                     emptyStateView
+                        .transition(.opacity)
                 }
             }
+            .animation(.barraBounce, value: crewVM.currentCrew != nil)
             .navigationTitle("The Crew")
             .navigationBarTitleDisplayMode(.large)
         }
@@ -42,19 +39,18 @@ struct CrewView: View {
         }
     }
 
-    // MARK: - Subviews
+    // MARK: - Crew exists
 
     @ViewBuilder
     private func crewExistsView(crew: Crew) -> some View {
         VStack(spacing: BarraTheme.paddingM) {
-            // Crew card — taps into CrewDetailView
             NavigationLink(destination: CrewDetailView(crewVM: crewVM)) {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(crew.name)
                             .font(.system(size: 20, weight: .bold, design: .rounded))
                             .foregroundStyle(BarraTheme.primary)
-                        Text("\(crew.members.count) member\(crew.members.count == 1 ? "" : "s")  •  \(crew.inviteCode)")
+                        Text("\(crew.members.count) member\(crew.members.count == 1 ? "" : "s")  ·  \(crew.inviteCode)")
                             .font(.system(size: 14, design: .rounded))
                             .foregroundStyle(BarraTheme.secondary)
                     }
@@ -71,26 +67,67 @@ struct CrewView: View {
                         .stroke(BarraTheme.secondary.opacity(0.2), lineWidth: 1)
                 )
             }
+            .buttonStyle(BarraCardPressStyle())
             .padding(.horizontal, BarraTheme.paddingM)
+            .staggeredAppearance(index: 0)
+
+            // Upcoming events preview
+            if let crew = crewVM.currentCrew {
+                let upcoming = crew.events.filter { $0.isUpcoming }.sorted { $0.date < $1.date }.prefix(2)
+                if !upcoming.isEmpty {
+                    VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
+                        Text("UPCOMING")
+                            .font(.system(size: 11, weight: .semibold, design: .rounded))
+                            .foregroundStyle(BarraTheme.secondary)
+                            .tracking(1.5)
+                            .padding(.horizontal, BarraTheme.paddingM)
+
+                        ForEach(Array(upcoming.enumerated()), id: \.element.id) { idx, event in
+                            HStack(spacing: 12) {
+                                VStack(spacing: 2) {
+                                    Text(event.date.formatted(.dateTime.month(.abbreviated)))
+                                        .font(.system(size: 10, weight: .medium, design: .rounded))
+                                        .foregroundStyle(BarraTheme.accent)
+                                    Text(event.date.formatted(.dateTime.day()))
+                                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                                        .foregroundStyle(BarraTheme.primary)
+                                }
+                                .frame(width: 36)
+
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(event.title)
+                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                        .foregroundStyle(BarraTheme.primary)
+                                    Text(event.date.formatted(.dateTime.hour().minute()))
+                                        .font(.system(size: 13, design: .rounded))
+                                        .foregroundStyle(BarraTheme.secondary)
+                                }
+                                Spacer()
+                            }
+                            .padding(BarraTheme.paddingM)
+                            .background(BarraTheme.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: BarraTheme.cornerRadius))
+                            .padding(.horizontal, BarraTheme.paddingM)
+                            .staggeredAppearance(index: idx + 1)
+                        }
+                    }
+                }
+            }
 
             Spacer()
         }
         .padding(.top, BarraTheme.paddingM)
     }
 
+    // MARK: - Empty state (with moon scene)
+
     private var emptyStateView: some View {
         VStack(spacing: BarraTheme.paddingL) {
             Spacer()
 
-            // Icon
-            ZStack {
-                Circle()
-                    .fill(BarraTheme.accent.opacity(0.12))
-                    .frame(width: 100, height: 100)
-                Image(systemName: "person.3.fill")
-                    .font(.system(size: 40))
-                    .foregroundStyle(BarraTheme.accent)
-            }
+            // Animated moon illustration
+            BarraMoonScene(moonSize: 80)
+                .staggeredAppearance(index: 0)
 
             // Copy
             VStack(spacing: 8) {
@@ -102,30 +139,29 @@ struct CrewView: View {
                     .foregroundStyle(BarraTheme.secondary)
                     .multilineTextAlignment(.center)
             }
+            .staggeredAppearance(index: 1)
 
             Spacer()
 
             // Actions
             VStack(spacing: BarraTheme.paddingS) {
-                BarraButton(title: "Create a Crew") {
+                BarraButton(title: "Create a Crew", icon: "plus") {
                     showCreate = true
                 }
-                BarraButton(title: "Join with a Code", style: .secondary) {
+                BarraButton(title: "Join with a Code", style: .secondary, icon: "link") {
                     showJoin = true
                 }
             }
             .padding(.horizontal, BarraTheme.paddingM)
             .padding(.bottom, BarraTheme.paddingL)
+            .staggeredAppearance(index: 2)
         }
     }
 }
 
 #Preview("Empty state") {
-    CrewView(crewVM: CrewViewModel())
-}
-
-#Preview("Has crew") {
-    let vm = CrewViewModel()
-    vm.createCrew(name: "The Wolves", yourName: "Mohamed")
-    return CrewView(crewVM: vm)
+    CrewView(crewVM: {
+        let container = try! ModelContainer(for: Crew.self, Player.self, GameEvent.self)
+        return CrewViewModel(modelContext: container.mainContext)
+    }())
 }
