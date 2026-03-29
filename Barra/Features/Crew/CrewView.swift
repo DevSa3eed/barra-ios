@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// The root of the Crew tab.
 ///

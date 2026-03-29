@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// Sheet — presented when the user taps "Schedule a Game Night".
 struct CreateEventView: View {

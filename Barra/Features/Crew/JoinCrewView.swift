@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// Sheet — presented when the user taps "Join a Crew".
 struct JoinCrewView: View {
@@ -100,5 +101,8 @@ struct JoinCrewView: View {
 }
 
 #Preview {
-    JoinCrewView(crewVM: CrewViewModel())
+    JoinCrewView(crewVM: {
+        let container = try! ModelContainer(for: Crew.self, Player.self, GameEvent.self)
+        return CrewViewModel(modelContext: container.mainContext)
+    }())
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// Sheet — presented when the user taps "Create a Crew".
 struct CreateCrewView: View {
@@ -89,5 +90,8 @@ struct BarraTextField: View {
 }
 
 #Preview {
-    CreateCrewView(crewVM: CrewViewModel())
+    CreateCrewView(crewVM: {
+        let container = try! ModelContainer(for: Crew.self, Player.self, GameEvent.self)
+        return CrewViewModel(modelContext: container.mainContext)
+    }())
 }
