@@ -7,25 +7,61 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00A173F3AD72AD1A019FC920 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597EB72AF337654783ADE02 /* EventDetailView.swift */; };
+		11819C647A60819608F852E2 /* CrewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030A3878EF3187D9AFA8FFB7 /* CrewDetailView.swift */; };
+		1BB04F2801B3CB2E0CF3E881 /* CreateEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CF3D4F9300244283AF0913A /* CreateEventView.swift */; };
+		1DF7F0F34E3BBE73064BDE12 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0529FDC9B327A2C18AE59A /* HapticManager.swift */; };
+		2D02BFED8DBFC6DF2A9C274B /* PasswordResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92730C326097C5A32DC5D92D /* PasswordResultsView.swift */; };
+		36024FF2E264057025110A7C /* PasswordGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA912A084581C736B490B8F3 /* PasswordGameView.swift */; };
+		3CE72BF31D85170E3819ED8D /* PasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004749CE3AD3D5830EFAD1C4 /* PasswordViewModel.swift */; };
+		586E5076FED8B799481C5589 /* BarraAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61972319A435104881846304 /* BarraAnimations.swift */; };
+		61F2B4CD530D13E767BAA20E /* BarraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF7B41B590D1347EC3B784 /* BarraButton.swift */; };
+		660DA8C4625E0A86ADE9C3A8 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48CF17B3223944B3BABE3285 /* Player.swift */; };
 		697560F065B6AB2E1EE13853 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D127C6AB76292E4DCDE42744 /* HistoryView.swift */; };
+		765266296E2DDAD865EE4BE4 /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12FD2EE6E65F229D4597B3E /* GameEvent.swift */; };
+		7AA5DE72606FAD391A885B30 /* JoinCrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3847F3B649317A7C345BC7AC /* JoinCrewView.swift */; };
+		908C3020CF5EF73360054784 /* PasswordSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C419CC44DBCC286586035F5F /* PasswordSetupView.swift */; };
 		AAF5EC5FD7ECE8BC6D87B403 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83F7AFE11D1300EE6AFDDE /* ContentView.swift */; };
+		B8B8637DD271E4C9B6AE2E8C /* PasswordGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B81A91242A99AB6746AB10D /* PasswordGame.swift */; };
+		BA7EBA0F34BE9BC60B3BFE37 /* CrewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A77DDFCA5639C116F7E33 /* CrewViewModel.swift */; };
 		BAC3CBBF1A1FCCB5BDE8CF15 /* CrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756AE0F3EF207692C9590880 /* CrewView.swift */; };
+		BD47B76FD0E0C801858FA139 /* BarraMoonScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF1283C5D7F02DB2F9C78449 /* BarraMoonScene.swift */; };
 		C229F612902C5FDF2F61D38F /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA039D3A25BC7CF14A75AA /* GamesView.swift */; };
 		D0DE143D8FA60F9F475523BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D0DC8C6A4B144421C41210C /* Assets.xcassets */; };
+		D69E2DAA3803FE54F7F9E464 /* Crew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E95BDAAF64C48EECE6B0D9 /* Crew.swift */; };
 		E0212B556AAF7317976A6A62 /* BarraTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B52914B1267EB7C8A7D7A17 /* BarraTheme.swift */; };
 		EB330AE8AC626A9A7670A7F8 /* BarraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D161A4B877B665993B56E2 /* BarraApp.swift */; };
+		F4EE1BCA695B71F6C8A4E916 /* CreateCrewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231D18C7367B9B8D24B062A8 /* CreateCrewView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		004749CE3AD3D5830EFAD1C4 /* PasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewModel.swift; sourceTree = "<group>"; };
+		030A3878EF3187D9AFA8FFB7 /* CrewDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewDetailView.swift; sourceTree = "<group>"; };
+		04E95BDAAF64C48EECE6B0D9 /* Crew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crew.swift; sourceTree = "<group>"; };
+		231D18C7367B9B8D24B062A8 /* CreateCrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCrewView.swift; sourceTree = "<group>"; };
+		2CF3D4F9300244283AF0913A /* CreateEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventView.swift; sourceTree = "<group>"; };
 		31D161A4B877B665993B56E2 /* BarraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraApp.swift; sourceTree = "<group>"; };
+		3847F3B649317A7C345BC7AC /* JoinCrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCrewView.swift; sourceTree = "<group>"; };
+		48CF17B3223944B3BABE3285 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		5B81A91242A99AB6746AB10D /* PasswordGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGame.swift; sourceTree = "<group>"; };
 		5D0DC8C6A4B144421C41210C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61972319A435104881846304 /* BarraAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraAnimations.swift; sourceTree = "<group>"; };
 		6CBA039D3A25BC7CF14A75AA /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
+		6DFF7B41B590D1347EC3B784 /* BarraButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraButton.swift; sourceTree = "<group>"; };
 		756AE0F3EF207692C9590880 /* CrewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewView.swift; sourceTree = "<group>"; };
+		7597EB72AF337654783ADE02 /* EventDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		7B52914B1267EB7C8A7D7A17 /* BarraTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraTheme.swift; sourceTree = "<group>"; };
 		7C83F7AFE11D1300EE6AFDDE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		92730C326097C5A32DC5D92D /* PasswordResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResultsView.swift; sourceTree = "<group>"; };
+		AF1283C5D7F02DB2F9C78449 /* BarraMoonScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraMoonScene.swift; sourceTree = "<group>"; };
+		C419CC44DBCC286586035F5F /* PasswordSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordSetupView.swift; sourceTree = "<group>"; };
+		CA0529FDC9B327A2C18AE59A /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		CA30AD2C6E7353757858C243 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D127C6AB76292E4DCDE42744 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		D9714D1137950D7A4B8CAE6A /* Barra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Barra.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E05A77DDFCA5639C116F7E33 /* CrewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrewViewModel.swift; sourceTree = "<group>"; };
+		E12FD2EE6E65F229D4597B3E /* GameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
+		FA912A084581C736B490B8F3 /* PasswordGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -65,6 +101,7 @@
 		27D1EC1586E5FE9E0E0E56FF /* Theme */ = {
 			isa = PBXGroup;
 			children = (
+				61972319A435104881846304 /* BarraAnimations.swift */,
 				7B52914B1267EB7C8A7D7A17 /* BarraTheme.swift */,
 			);
 			path = Theme;
@@ -80,18 +117,64 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
+		5471AAC0CCC077AA58BD7714 /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				FA912A084581C736B490B8F3 /* PasswordGameView.swift */,
+				92730C326097C5A32DC5D92D /* PasswordResultsView.swift */,
+				C419CC44DBCC286586035F5F /* PasswordSetupView.swift */,
+				004749CE3AD3D5830EFAD1C4 /* PasswordViewModel.swift */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		558BBBBCA4A0E45DAC8BD6D0 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				2CF3D4F9300244283AF0913A /* CreateEventView.swift */,
+				7597EB72AF337654783ADE02 /* EventDetailView.swift */,
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		70A8AB9BD593EDA2A5848814 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6DFF7B41B590D1347EC3B784 /* BarraButton.swift */,
+				AF1283C5D7F02DB2F9C78449 /* BarraMoonScene.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		71F8F0E31F6B4817C0FA5501 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				C56C3ECA7F5E6D30CD4FF45C /* Haptics */,
 				27D1EC1586E5FE9E0E0E56FF /* Theme */,
 			);
 			path = Core;
 			sourceTree = "<group>";
 		};
+		794FEFFDD6A666724AE080D4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				04E95BDAAF64C48EECE6B0D9 /* Crew.swift */,
+				E12FD2EE6E65F229D4597B3E /* GameEvent.swift */,
+				5B81A91242A99AB6746AB10D /* PasswordGame.swift */,
+				48CF17B3223944B3BABE3285 /* Player.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8B4AE2BC4F5175576031EAC5 /* Crew */ = {
 			isa = PBXGroup;
 			children = (
+				231D18C7367B9B8D24B062A8 /* CreateCrewView.swift */,
+				030A3878EF3187D9AFA8FFB7 /* CrewDetailView.swift */,
 				756AE0F3EF207692C9590880 /* CrewView.swift */,
+				E05A77DDFCA5639C116F7E33 /* CrewViewModel.swift */,
+				3847F3B649317A7C345BC7AC /* JoinCrewView.swift */,
+				558BBBBCA4A0E45DAC8BD6D0 /* Events */,
 			);
 			path = Crew;
 			sourceTree = "<group>";
@@ -102,8 +185,10 @@
 				5D0DC8C6A4B144421C41210C /* Assets.xcassets */,
 				CA30AD2C6E7353757858C243 /* Info.plist */,
 				00CF91CB3250DC0C1A6A1089 /* App */,
+				70A8AB9BD593EDA2A5848814 /* Components */,
 				71F8F0E31F6B4817C0FA5501 /* Core */,
 				49E9808A6FA46CFCEDF0F348 /* Features */,
+				794FEFFDD6A666724AE080D4 /* Models */,
 			);
 			path = Barra;
 			sourceTree = "<group>";
@@ -112,8 +197,17 @@
 			isa = PBXGroup;
 			children = (
 				6CBA039D3A25BC7CF14A75AA /* GamesView.swift */,
+				5471AAC0CCC077AA58BD7714 /* Password */,
 			);
 			path = Games;
+			sourceTree = "<group>";
+		};
+		C56C3ECA7F5E6D30CD4FF45C /* Haptics */ = {
+			isa = PBXGroup;
+			children = (
+				CA0529FDC9B327A2C18AE59A /* HapticManager.swift */,
+			);
+			path = Haptics;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,12 +280,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				586E5076FED8B799481C5589 /* BarraAnimations.swift in Sources */,
 				EB330AE8AC626A9A7670A7F8 /* BarraApp.swift in Sources */,
+				61F2B4CD530D13E767BAA20E /* BarraButton.swift in Sources */,
+				BD47B76FD0E0C801858FA139 /* BarraMoonScene.swift in Sources */,
 				E0212B556AAF7317976A6A62 /* BarraTheme.swift in Sources */,
 				AAF5EC5FD7ECE8BC6D87B403 /* ContentView.swift in Sources */,
+				F4EE1BCA695B71F6C8A4E916 /* CreateCrewView.swift in Sources */,
+				1BB04F2801B3CB2E0CF3E881 /* CreateEventView.swift in Sources */,
+				D69E2DAA3803FE54F7F9E464 /* Crew.swift in Sources */,
+				11819C647A60819608F852E2 /* CrewDetailView.swift in Sources */,
 				BAC3CBBF1A1FCCB5BDE8CF15 /* CrewView.swift in Sources */,
+				BA7EBA0F34BE9BC60B3BFE37 /* CrewViewModel.swift in Sources */,
+				00A173F3AD72AD1A019FC920 /* EventDetailView.swift in Sources */,
+				765266296E2DDAD865EE4BE4 /* GameEvent.swift in Sources */,
 				C229F612902C5FDF2F61D38F /* GamesView.swift in Sources */,
+				1DF7F0F34E3BBE73064BDE12 /* HapticManager.swift in Sources */,
 				697560F065B6AB2E1EE13853 /* HistoryView.swift in Sources */,
+				7AA5DE72606FAD391A885B30 /* JoinCrewView.swift in Sources */,
+				B8B8637DD271E4C9B6AE2E8C /* PasswordGame.swift in Sources */,
+				36024FF2E264057025110A7C /* PasswordGameView.swift in Sources */,
+				2D02BFED8DBFC6DF2A9C274B /* PasswordResultsView.swift in Sources */,
+				908C3020CF5EF73360054784 /* PasswordSetupView.swift in Sources */,
+				3CE72BF31D85170E3819ED8D /* PasswordViewModel.swift in Sources */,
+				660DA8C4625E0A86ADE9C3A8 /* Player.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
