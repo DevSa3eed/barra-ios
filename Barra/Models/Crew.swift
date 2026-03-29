@@ -1,19 +1,31 @@
 import Foundation
+import SwiftData
 
 /// A friend group in Barra.
 ///
-/// Kept as a pure data struct — no logic lives here.
-/// All behavior (create, join, leave) belongs in CrewViewModel.
-struct Crew: Identifiable, Codable {
-    let id: UUID
+/// WEEK 4 CHANGE: Converted from a struct to a SwiftData @Model class.
+///
+/// @Relationship rules:
+///   - deleteRule: .cascade  → when the Crew is deleted, all its members and events are too
+///   - inverse: \Player.crew → SwiftData keeps the back-reference in sync automatically
+///     (setting crew.members = [...] also sets each player.crew = crew)
+@Model
+final class Crew {
+    var id: UUID
     var name: String
-    var inviteCode: String  // 6-character alphanumeric code, e.g. "XK92BQ"
+    var inviteCode: String
+
+    @Relationship(deleteRule: .cascade, inverse: \Player.crew)
     var members: [Player]
 
-    init(id: UUID = UUID(), name: String, inviteCode: String, members: [Player] = []) {
-        self.id = id
+    @Relationship(deleteRule: .cascade, inverse: \GameEvent.crew)
+    var events: [GameEvent]
+
+    init(name: String, inviteCode: String) {
+        self.id = UUID()
         self.name = name
         self.inviteCode = inviteCode
-        self.members = members
+        self.members = []
+        self.events = []
     }
 }

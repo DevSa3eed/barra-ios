@@ -1,11 +1,19 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
 
-    // @StateObject = ContentView OWNS this ViewModel.
-    // It is created exactly once and lives for the app's lifetime.
-    // Every sub-view that needs it receives it with @ObservedObject.
-    @StateObject private var crewVM = CrewViewModel()
+    // @StateObject: ContentView owns the ViewModel for the app's lifetime.
+    //
+    // HOW TO INIT @StateObject WITH AN EXTERNAL VALUE:
+    // You can't write `@StateObject private var crewVM = CrewViewModel(modelContext: x)`
+    // when `x` comes from outside. Instead, use the underscore prefix to access
+    // the property wrapper itself and call StateObject(wrappedValue:) directly.
+    @StateObject private var crewVM: CrewViewModel
+
+    init(modelContext: ModelContext) {
+        _crewVM = StateObject(wrappedValue: CrewViewModel(modelContext: modelContext))
+    }
 
     var body: some View {
         TabView {
@@ -26,8 +34,4 @@ struct ContentView: View {
         }
         .tint(BarraTheme.accent)
     }
-}
-
-#Preview {
-    ContentView()
 }

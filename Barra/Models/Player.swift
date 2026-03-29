@@ -1,16 +1,25 @@
 import Foundation
+import SwiftData
 
 /// A single person in a crew.
 ///
-/// - `Identifiable`  → ForEach can iterate an array of Players without specifying a key path
-/// - `Codable`       → can be saved to / loaded from UserDefaults via JSON
-/// - `Equatable`     → lets you use .contains() to check membership
-struct Player: Identifiable, Codable, Equatable {
-    let id: UUID
+/// WEEK 4 CHANGE: This is now a SwiftData @Model class instead of a struct.
+///
+/// KEY DIFFERENCE from a struct:
+///   - Classes are reference types — SwiftData tracks changes to them automatically.
+///   - @Model adds persistence magic: save, fetch, delete via ModelContext.
+///   - The `crew` property is a SwiftData relationship (back-reference to the owning crew).
+@Model
+final class Player {
+    var id: UUID
     var name: String
 
-    init(id: UUID = UUID(), name: String) {
-        self.id = id
+    // Back-reference to the crew this player belongs to.
+    // SwiftData manages this automatically when you use @Relationship on Crew.members.
+    var crew: Crew?
+
+    init(name: String) {
+        self.id = UUID()
         self.name = name
     }
 }
