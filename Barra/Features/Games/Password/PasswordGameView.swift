@@ -1,13 +1,12 @@
 import SwiftUI
 
-/// The main gameplay screen — shown during an active Password game.
+/// The main gameplay screen — pass-the-phone clue/guess flow.
 struct PasswordGameView: View {
 
     @ObservedObject var gameVM: PasswordViewModel
 
     // Word reveal animation
-    @State private var wordScale: CGFloat = 0.3
-    @State private var wordOpacity: Double = 0
+    @State private var wordRevealed = false
 
     var body: some View {
         ZStack {
@@ -17,19 +16,27 @@ struct PasswordGameView: View {
             case .setup:
                 EmptyView()
 
-            case .roundIntro:
-                roundIntroView
+            case .passPhone:
+                passPhoneView
                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
 
-            case .playing:
-                playingView
+            case .showingWord:
+                showingWordView
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing).combined(with: .opacity),
-                        removal: .move(edge: .leading).combined(with: .opacity)
+                        removal: .opacity
                     ))
 
-            case .roundEnd:
-                roundEndView
+            case .judging:
+                judgingView
+                    .transition(.opacity)
+
+            case .scored:
+                scoredView
+                    .transition(.scale(scale: 0.8).combined(with: .opacity))
+
+            case .nobodyGotIt:
+                nobodyGotItView
                     .transition(.opacity)
 
             case .gameOver:
@@ -40,69 +47,60 @@ struct PasswordGameView: View {
         .animation(.easeInOut(duration: 0.35), value: gameVM.phase)
     }
 
-    // MARK: - Round Intro ("Get Ready!")
+    // MARK: - Pass Phone Screen
+    // "Pass the phone to [Team]'s describer — don't peek!"
 
-    private var roundIntroView: some View {
+    private var passPhoneView: some View {
         VStack(spacing: BarraTheme.paddingL) {
             Spacer()
 
-            // Team colour indicator — with a breathing glow
-            ZStack {
-                // Outer glow
-                Circle()
-                    .fill(teamColor(gameVM.currentTeamIndex).opacity(0.08))
-                    .frame(width: 160, height: 160)
-
-                Circle()
-                    .fill(teamColor(gameVM.currentTeamIndex).opacity(0.15))
-                    .frame(width: 120, height: 120)
-
-                Text(teamEmoji(gameVM.currentTeamIndex))
-                    .font(.system(size: 52))
-            }
-            .staggeredAppearance(index: 0)
-
-            VStack(spacing: 8) {
-                Text(gameVM.currentTeam.name)
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .foregroundStyle(BarraTheme.primary)
-                Text("it's your turn")
-                    .font(.system(size: 18, design: .rounded))
-                    .foregroundStyle(BarraTheme.secondary)
-            }
-            .staggeredAppearance(index: 1)
-
-            Text(gameVM.roundLabel)
-                .font(.system(size: 14, weight: .medium, design: .rounded))
-                .foregroundStyle(BarraTheme.secondary)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 6)
-                .background(BarraTheme.surface)
-                .clipShape(Capsule())
-                .staggeredAppearance(index: 2)
+            // Score bar at top
+            scoreBar
+                .staggeredAppearance(index: 0)
 
             Spacer()
 
-            scoreBar
+            // Team indicator
+            ZStack {
+                Circle()
+                    .fill(teamColor(gameVM.currentClueTeamIndex).opacity(0.08))
+                    .frame(width: 160, height: 160)
+                Circle()
+                    .fill(teamColor(gameVM.currentClueTeamIndex).opacity(0.15))
+                    .frame(width: 120, height: 120)
+                Text(teamEmoji(gameVM.currentClueTeamIndex))
+                    .font(.system(size: 56))
+            }
+            .staggeredAppearance(index: 1)
+
+            VStack(spacing: 8) {
+                Text(gameVM.currentTeam.name)
+                    .font(.system(size: 30, weight: .bold, design: .rounded))
+                    .foregroundStyle(BarraTheme.primary)
+                Text("your turn to give a clue")
+                    .font(.system(size: 17, design: .rounded))
+                    .foregroundStyle(BarraTheme.secondary)
+            }
+            .staggeredAppearance(index: 2)
+
+            // Attempt badge
+            attemptBadge
                 .staggeredAppearance(index: 3)
 
-            Text("Pass the phone to \(gameVM.currentTeam.name)'s describer — don't let the other team see the word!")
-                .font(.system(size: 13, design: .rounded))
+            Spacer()
+
+            Text("Pass the phone to \(gameVM.currentTeam.name)'s describer.\nNo peeking!")
+                .font(.system(size: 14, design: .rounded))
                 .foregroundStyle(BarraTheme.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, BarraTheme.paddingL)
 
-            BarraButton(title: "I'm Ready — Show Word", icon: "eye.fill") {
-                HapticManager.light()
-                withAnimation {
-                    gameVM.beginRound()
-                }
-                // Trigger word reveal animation
-                wordScale = 0.3
-                wordOpacity = 0
+            BarraButton(title: "I'm the Describer — Show Word", icon: "eye.fill") {
+                wordRevealed = false
+                gameVM.showWord()
+                // Animate word reveal
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.6).delay(0.15)) {
-                    wordScale = 1.0
-                    wordOpacity = 1.0
+                    wordRevealed = true
                 }
             }
             .padding(.horizontal, BarraTheme.paddingL)
@@ -110,84 +108,126 @@ struct PasswordGameView: View {
         }
     }
 
-    // MARK: - Playing view
+    // MARK: - Showing Word Screen
+    // Describer sees the word and gives a ONE-WORD verbal clue
 
-    private var playingView: some View {
+    private var showingWordView: some View {
         VStack(spacing: 0) {
 
-            // Top bar
+            // Top: score + attempt info
             VStack(spacing: BarraTheme.paddingS) {
-                Text(gameVM.roundLabel)
-                    .font(.system(size: 13, weight: .medium, design: .rounded))
-                    .foregroundStyle(BarraTheme.secondary)
                 scoreBar
+                attemptBadge
             }
             .padding(.top, BarraTheme.paddingM)
-            .padding(.horizontal, BarraTheme.paddingM)
 
             Spacer()
 
-            // Timer ring with pulse when low
-            timerRing
-
-            Spacer()
-
-            // The word — revealed with a spring animation
+            // The word
             VStack(spacing: BarraTheme.paddingS) {
-                Text("The word is")
-                    .font(.system(size: 16, design: .rounded))
+                Text("THE WORD IS")
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(BarraTheme.secondary)
+                    .tracking(2)
 
                 Text(gameVM.currentWord)
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
+                    .font(.system(size: 52, weight: .bold, design: .rounded))
                     .foregroundStyle(BarraTheme.primary)
-                    .minimumScaleFactor(0.5)
+                    .minimumScaleFactor(0.4)
                     .lineLimit(1)
                     .padding(.horizontal, BarraTheme.paddingL)
-                    .scaleEffect(wordScale)
-                    .opacity(wordOpacity)
+                    .scaleEffect(wordRevealed ? 1.0 : 0.3)
+                    .opacity(wordRevealed ? 1.0 : 0)
+
+                Text("Give a ONE-WORD clue out loud")
+                    .font(.system(size: 15, design: .rounded))
+                    .foregroundStyle(BarraTheme.accent)
+                    .padding(.top, 4)
             }
 
             Spacer()
 
-            // Action buttons
+            // Rules reminder
+            VStack(spacing: 4) {
+                Label("No rhyming, no sounds, no gestures", systemImage: "exclamationmark.triangle.fill")
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundStyle(BarraTheme.secondary.opacity(0.7))
+                Label("Only ONE word per clue", systemImage: "1.circle.fill")
+                    .font(.system(size: 13, design: .rounded))
+                    .foregroundStyle(BarraTheme.secondary.opacity(0.7))
+            }
+
+            BarraButton(title: "I Gave My Clue", icon: "checkmark") {
+                gameVM.clueGiven()
+            }
+            .padding(.horizontal, BarraTheme.paddingL)
+            .padding(.bottom, BarraTheme.paddingL)
+        }
+    }
+
+    // MARK: - Judging Screen
+    // "Did [Team] guess correctly?"
+
+    private var judgingView: some View {
+        VStack(spacing: 0) {
+
+            // Top
+            VStack(spacing: BarraTheme.paddingS) {
+                scoreBar
+                attemptBadge
+            }
+            .padding(.top, BarraTheme.paddingM)
+
+            Spacer()
+
+            // Word (still visible for the describer to judge)
+            VStack(spacing: BarraTheme.paddingM) {
+                Text(gameVM.currentWord)
+                    .font(.system(size: 44, weight: .bold, design: .rounded))
+                    .foregroundStyle(BarraTheme.primary)
+                    .minimumScaleFactor(0.4)
+                    .lineLimit(1)
+                    .padding(.horizontal, BarraTheme.paddingL)
+
+                Text("Did \(gameVM.currentTeam.name) guess it?")
+                    .font(.system(size: 18, weight: .medium, design: .rounded))
+                    .foregroundStyle(BarraTheme.secondary)
+            }
+
+            Spacer()
+
+            // Correct / Wrong buttons
             HStack(spacing: BarraTheme.paddingM) {
-                // Skip
+                // Wrong
                 Button {
-                    HapticManager.light()
-                    withAnimation { gameVM.wordSkipped() }
+                    withAnimation { gameVM.guessedWrong() }
                 } label: {
-                    VStack(spacing: 6) {
-                        Image(systemName: "forward.fill")
-                            .font(.system(size: 22))
-                        Text("Skip")
-                            .font(.system(size: 14, weight: .medium, design: .rounded))
+                    VStack(spacing: 8) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 32))
+                        Text("Wrong")
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, BarraTheme.paddingM)
-                    .foregroundStyle(BarraTheme.secondary)
-                    .background(BarraTheme.surface)
+                    .padding(.vertical, 24)
+                    .foregroundStyle(.white)
+                    .background(Color(red: 0.75, green: 0.25, blue: 0.25))
                     .clipShape(RoundedRectangle(cornerRadius: BarraTheme.cornerRadius))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: BarraTheme.cornerRadius)
-                            .stroke(BarraTheme.secondary.opacity(0.3), lineWidth: 1)
-                    )
                 }
                 .buttonStyle(BarraPressStyle())
 
-                // Got it!
+                // Correct
                 Button {
-                    HapticManager.doubleTap()
-                    withAnimation { gameVM.wordGuessed() }
+                    withAnimation { gameVM.guessedCorrectly() }
                 } label: {
-                    VStack(spacing: 6) {
+                    VStack(spacing: 8) {
                         Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 22))
-                        Text("Got It!")
-                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                            .font(.system(size: 32))
+                        Text("Correct!")
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
                     }
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, BarraTheme.paddingM)
+                    .padding(.vertical, 24)
                     .foregroundStyle(.white)
                     .background(Color(red: 0.18, green: 0.65, blue: 0.40))
                     .clipShape(RoundedRectangle(cornerRadius: BarraTheme.cornerRadius))
@@ -197,29 +237,59 @@ struct PasswordGameView: View {
             .padding(.horizontal, BarraTheme.paddingM)
             .padding(.bottom, BarraTheme.paddingL)
         }
-        // Haptic ticks in the final 5 seconds
-        .onChange(of: gameVM.timeRemaining) { _, newValue in
-            if newValue <= 5 && newValue > 0 {
-                HapticManager.tick()
-            }
-            if newValue == 10 {
-                HapticManager.warning()
-            }
+    }
+
+    // MARK: - Scored! Celebration
+
+    private var scoredView: some View {
+        VStack(spacing: BarraTheme.paddingM) {
+            Spacer()
+
+            Text("✅")
+                .font(.system(size: 72))
+                .scaleEffect(1.0)
+                .transition(.scale(scale: 0.3).combined(with: .opacity))
+
+            Text(gameVM.currentTeam.name)
+                .font(.system(size: 28, weight: .bold, design: .rounded))
+                .foregroundStyle(BarraTheme.primary)
+
+            Text("+\(gameVM.lastScoredPoints) points!")
+                .font(.system(size: 36, weight: .bold, design: .rounded))
+                .foregroundStyle(BarraTheme.accent)
+                .contentTransition(.numericText())
+
+            scoreBar
+                .padding(.top, BarraTheme.paddingM)
+
+            Spacer()
         }
     }
 
-    // MARK: - Round end (brief transition screen)
+    // MARK: - Nobody Got It
 
-    private var roundEndView: some View {
+    private var nobodyGotItView: some View {
         VStack(spacing: BarraTheme.paddingM) {
             Spacer()
-            ProgressView()
-                .progressViewStyle(.circular)
-                .tint(BarraTheme.accent)
-                .scaleEffect(1.2)
-            Text("Next round...")
-                .font(.system(size: 16, design: .rounded))
+
+            Text("😬")
+                .font(.system(size: 72))
+
+            Text("Nobody got it!")
+                .font(.system(size: 24, weight: .bold, design: .rounded))
+                .foregroundStyle(BarraTheme.primary)
+
+            Text("The word was")
+                .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(BarraTheme.secondary)
+
+            Text(gameVM.currentWord)
+                .font(.system(size: 32, weight: .bold, design: .rounded))
+                .foregroundStyle(BarraTheme.accent)
+
+            scoreBar
+                .padding(.top, BarraTheme.paddingM)
+
             Spacer()
         }
     }
@@ -243,9 +313,15 @@ struct PasswordGameView: View {
 
             Spacer()
 
-            Text("vs")
-                .font(.system(size: 13, design: .rounded))
-                .foregroundStyle(BarraTheme.secondary)
+            // Target score indicator
+            VStack(spacing: 2) {
+                Text("First to")
+                    .font(.system(size: 10, design: .rounded))
+                    .foregroundStyle(BarraTheme.secondary)
+                Text("\(gameVM.targetScore)")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(BarraTheme.accent)
+            }
 
             Spacer()
 
@@ -271,52 +347,44 @@ struct PasswordGameView: View {
         .animation(.spring(response: 0.4), value: gameVM.teams[1].score)
     }
 
-    private var timerRing: some View {
-        let isUrgent = gameVM.timeRemaining <= 10
+    private var attemptBadge: some View {
+        HStack(spacing: BarraTheme.paddingM) {
+            ForEach(1...3, id: \.self) { attempt in
+                let isCurrent = attempt == gameVM.currentAttempt
+                let isPast = attempt < gameVM.currentAttempt
 
-        return ZStack {
-            // Background ring
-            Circle()
-                .stroke(BarraTheme.secondary.opacity(0.15), lineWidth: 8)
-                .frame(width: 110, height: 110)
-
-            // Progress ring
-            Circle()
-                .trim(from: 0, to: gameVM.timerProgress)
-                .stroke(
-                    timerColor(gameVM.timeRemaining),
-                    style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                VStack(spacing: 4) {
+                    Text("\(pointsForAttempt(attempt))")
+                        .font(.system(size: isCurrent ? 24 : 16, weight: .bold, design: .rounded))
+                        .foregroundStyle(
+                            isCurrent ? BarraTheme.accent :
+                            isPast ? BarraTheme.secondary.opacity(0.3) :
+                            BarraTheme.secondary.opacity(0.5)
+                        )
+                    Text("pts")
+                        .font(.system(size: 11, design: .rounded))
+                        .foregroundStyle(BarraTheme.secondary.opacity(isCurrent ? 1 : 0.4))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+                .background(
+                    isCurrent ? BarraTheme.accent.opacity(0.1) : Color.clear
                 )
-                .frame(width: 110, height: 110)
-                .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 1), value: gameVM.timeRemaining)
-
-            // Time number
-            VStack(spacing: 2) {
-                Text("\(gameVM.timeRemaining)")
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .foregroundStyle(timerColor(gameVM.timeRemaining))
-                    .contentTransition(.numericText(countsDown: true))
-                    .animation(.linear(duration: 0.5), value: gameVM.timeRemaining)
-                Text("sec")
-                    .font(.system(size: 11, design: .rounded))
-                    .foregroundStyle(BarraTheme.secondary)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(
+                            isCurrent ? BarraTheme.accent.opacity(0.3) : Color.clear,
+                            lineWidth: 1
+                        )
+                )
+                .animation(.barraSnap, value: gameVM.currentAttempt)
             }
         }
-        // Pulse the ring when urgent
-        .scaleEffect(isUrgent && gameVM.timeRemaining % 2 == 0 ? 1.06 : 1.0)
-        .animation(.easeInOut(duration: 0.5), value: gameVM.timeRemaining)
+        .padding(.horizontal, BarraTheme.paddingL)
     }
 
     // MARK: - Helpers
-
-    private func timerColor(_ seconds: Int) -> Color {
-        switch seconds {
-        case 21...: return BarraTheme.accent
-        case 11...20: return .orange
-        default: return .red
-        }
-    }
 
     private func teamColor(_ index: Int) -> Color {
         index == 0 ? .red : .blue

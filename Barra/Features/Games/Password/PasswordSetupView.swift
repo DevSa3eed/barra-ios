@@ -1,26 +1,18 @@
 import SwiftUI
 
-/// The setup screen before a Password game begins.
-/// Creates and OWNS the PasswordViewModel — @StateObject lives here.
+/// Setup screen — pick teams, category, and target score.
 struct PasswordSetupView: View {
 
-    // @StateObject: this view CREATES the ViewModel.
-    // It survives re-renders of PasswordSetupView without being reset.
     @StateObject private var gameVM = PasswordViewModel()
-
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
             BarraTheme.background.ignoresSafeArea()
 
-            // Show loading spinner while words are being fetched
-            if gameVM.isLoadingWords {
-                loadingView
-            } else if gameVM.phase == .setup {
+            if gameVM.phase == .setup {
                 setupContent
             } else {
-                // Game has started — show the game view
                 PasswordGameView(gameVM: gameVM)
             }
         }
@@ -29,7 +21,7 @@ struct PasswordSetupView: View {
         .navigationBarBackButtonHidden(gameVM.phase != .setup)
     }
 
-    // MARK: - Setup content
+    // MARK: - Setup
 
     private var setupContent: some View {
         ScrollView {
@@ -40,63 +32,59 @@ struct PasswordSetupView: View {
                     Text("Set up the game")
                         .font(.system(size: 28, weight: .bold, design: .rounded))
                         .foregroundStyle(BarraTheme.primary)
-                    Text("Two teams, one word. Describe it without saying it.")
+                    Text("Give one-word clues. First to the target score wins.")
                         .font(.system(size: 15, design: .rounded))
                         .foregroundStyle(BarraTheme.secondary)
                 }
+                .staggeredAppearance(index: 0)
 
-                // Team names
+                // Teams
                 VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
                     sectionLabel("Teams")
-
-                    VStack(spacing: BarraTheme.paddingS) {
-                        teamField(index: 0, icon: "🔴")
-                        teamField(index: 1, icon: "🔵")
-                    }
+                    teamField(index: 0, emoji: "🔴")
+                    teamField(index: 1, emoji: "🔵")
                 }
+                .staggeredAppearance(index: 1)
 
-                // Rounds picker
+                // Category picker
                 VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
-                    sectionLabel("Rounds")
-
-                    HStack(spacing: BarraTheme.paddingS) {
-                        ForEach([3, 5, 7, 10], id: \.self) { count in
-                            roundOption(count)
-                        }
-                    }
+                    sectionLabel("Category")
+                    categoryGrid
                 }
+                .staggeredAppearance(index: 2)
+
+                // Target score
+                VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
+                    sectionLabel("First to...")
+                    scoreOptions
+                }
+                .staggeredAppearance(index: 3)
 
                 // How to play
                 VStack(alignment: .leading, spacing: BarraTheme.paddingS) {
                     sectionLabel("How to play")
                     howToPlayCard
                 }
+                .staggeredAppearance(index: 4)
 
                 Spacer(minLength: BarraTheme.paddingL)
 
-                BarraButton(title: "Start Game") {
+                BarraButton(title: "Start Game", icon: "play.fill") {
                     gameVM.startGame()
                 }
+                .staggeredAppearance(index: 5)
                 .padding(.bottom, BarraTheme.paddingL)
             }
             .padding(BarraTheme.paddingL)
         }
     }
 
-    // MARK: - Subviews
+    // MARK: - Team fields
 
     @ViewBuilder
-    private func sectionLabel(_ text: String) -> some View {
-        Text(text.uppercased())
-            .font(.system(size: 12, weight: .semibold, design: .rounded))
-            .foregroundStyle(BarraTheme.secondary)
-            .tracking(1.5)
-    }
-
-    @ViewBuilder
-    private func teamField(index: Int, icon: String) -> some View {
+    private func teamField(index: Int, emoji: String) -> some View {
         HStack(spacing: BarraTheme.paddingS) {
-            Text(icon)
+            Text(emoji)
                 .font(.system(size: 24))
                 .frame(width: 40)
 
@@ -115,37 +103,108 @@ struct PasswordSetupView: View {
         }
     }
 
-    @ViewBuilder
-    private func roundOption(_ count: Int) -> some View {
-        let selected = gameVM.roundCount == count
-        Button {
-            withAnimation(.spring(response: 0.3)) {
-                gameVM.roundCount = count
+    // MARK: - Category grid
+
+    private var categoryGrid: some View {
+        LazyVGrid(columns: [
+            GridItem(.flexible(), spacing: BarraTheme.paddingS),
+            GridItem(.flexible(), spacing: BarraTheme.paddingS)
+        ], spacing: BarraTheme.paddingS) {
+            ForEach(PasswordCategories.all) { category in
+                categoryCard(category)
             }
-        } label: {
-            Text("\(count)")
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .foregroundStyle(selected ? .white : BarraTheme.primary)
-                .background(selected ? BarraTheme.accent : BarraTheme.surface)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(
-                            selected ? BarraTheme.accent : BarraTheme.secondary.opacity(0.3),
-                            lineWidth: 1
-                        )
-                )
         }
     }
 
+    @ViewBuilder
+    private func categoryCard(_ category: WordCategory) -> some View {
+        let isSelected = gameVM.selectedCategory.id == category.id
+
+        Button {
+            HapticManager.selection()
+            withAnimation(.barraSnap) {
+                gameVM.selectedCategory = category
+            }
+        } label: {
+            VStack(spacing: 6) {
+                Text(category.emoji)
+                    .font(.system(size: 28))
+                Text(category.name)
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .foregroundStyle(isSelected ? .white : BarraTheme.primary)
+                Text("\(category.words.count) words")
+                    .font(.system(size: 11, design: .rounded))
+                    .foregroundStyle(isSelected ? .white.opacity(0.7) : BarraTheme.secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(isSelected ? BarraTheme.accent : BarraTheme.surface)
+            .clipShape(RoundedRectangle(cornerRadius: BarraTheme.cornerRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: BarraTheme.cornerRadius)
+                    .stroke(
+                        isSelected ? BarraTheme.accent : BarraTheme.secondary.opacity(0.2),
+                        lineWidth: isSelected ? 0 : 1
+                    )
+            )
+            .scaleEffect(isSelected ? 1.02 : 1.0)
+        }
+        .buttonStyle(BarraPressStyle())
+    }
+
+    // MARK: - Score options
+
+    private var scoreOptions: some View {
+        HStack(spacing: BarraTheme.paddingS) {
+            ForEach([15, 30, 50], id: \.self) { score in
+                let isSelected = gameVM.targetScore == score
+                Button {
+                    HapticManager.selection()
+                    withAnimation(.barraSnap) {
+                        gameVM.targetScore = score
+                    }
+                } label: {
+                    VStack(spacing: 4) {
+                        Text("\(score)")
+                            .font(.system(size: 22, weight: .bold, design: .rounded))
+                        Text("points")
+                            .font(.system(size: 11, design: .rounded))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .foregroundStyle(isSelected ? .white : BarraTheme.primary)
+                    .background(isSelected ? BarraTheme.accent : BarraTheme.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: BarraTheme.cornerRadius))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: BarraTheme.cornerRadius)
+                            .stroke(
+                                isSelected ? BarraTheme.accent : BarraTheme.secondary.opacity(0.2),
+                                lineWidth: isSelected ? 0 : 1
+                            )
+                    )
+                    .scaleEffect(isSelected ? 1.02 : 1.0)
+                }
+            }
+        }
+    }
+
+    // MARK: - How to play
+
     private var howToPlayCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            howToPlayRow(icon: "eye.slash.fill", text: "One person sees the word — keep it hidden from your team")
-            howToPlayRow(icon: "bubble.left.fill", text: "Give one-word clues until your team guesses it")
-            howToPlayRow(icon: "timer", text: "60 seconds per round — tap Got It! or Skip")
-            howToPlayRow(icon: "trophy.fill", text: "Most points after all rounds wins")
+        VStack(alignment: .leading, spacing: 10) {
+            howToPlayRow(icon: "person.2.fill", text: "Split into 2 teams")
+            howToPlayRow(icon: "bubble.left.fill", text: "Describer gives a ONE-WORD clue")
+            howToPlayRow(icon: "questionmark.circle.fill", text: "Teammate tries to guess the word")
+            howToPlayRow(icon: "arrow.left.arrow.right", text: "Wrong? Other team gets a shot at it")
+
+            Divider()
+                .padding(.vertical, 2)
+
+            HStack(spacing: BarraTheme.paddingM) {
+                pointBadge(attempt: 1)
+                pointBadge(attempt: 2)
+                pointBadge(attempt: 3)
+            }
         }
         .padding(BarraTheme.paddingM)
         .background(BarraTheme.surface)
@@ -165,16 +224,27 @@ struct PasswordSetupView: View {
         }
     }
 
-    private var loadingView: some View {
-        VStack(spacing: BarraTheme.paddingM) {
-            ProgressView()
-                .progressViewStyle(.circular)
-                .tint(BarraTheme.accent)
-                .scaleEffect(1.4)
-            Text("Loading words...")
-                .font(.system(size: 16, design: .rounded))
+    @ViewBuilder
+    private func pointBadge(attempt: Int) -> some View {
+        VStack(spacing: 2) {
+            Text("Clue \(attempt)")
+                .font(.system(size: 11, design: .rounded))
+                .foregroundStyle(BarraTheme.secondary)
+            Text("\(pointsForAttempt(attempt))")
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundStyle(BarraTheme.accent)
+            Text("pts")
+                .font(.system(size: 11, design: .rounded))
                 .foregroundStyle(BarraTheme.secondary)
         }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func sectionLabel(_ text: String) -> some View {
+        Text(text.uppercased())
+            .font(.system(size: 12, weight: .semibold, design: .rounded))
+            .foregroundStyle(BarraTheme.secondary)
+            .tracking(1.5)
     }
 }
 
